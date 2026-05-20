@@ -44,27 +44,33 @@
     .card-title { font-size: 0.875rem; font-weight: 600; color: #2d3748; }
     .card-divider { height: 1px; background: #f0f4f8; }
 
-    .reading-item { padding: 1rem 1.1rem; }
-    .reading-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem; }
-    .reading-mes { font-size: 0.95rem; font-weight: 600; color: #2d3748; }
-    .reading-kwh-badge { background: #ebf8ff; color: #2b6cb0; border-radius: 20px; padding: 0.2rem 0.65rem; font-size: 0.75rem; font-weight: 600; }
-    .resumo-leitura { font-size: 0.72rem; color: #a0aec0; margin-bottom: 0.6rem; }
+    /* Mês agrupado */
+    .mes-block { padding: 1rem 1.1rem; }
+    .mes-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; }
+    .mes-titulo { font-size: 0.95rem; font-weight: 700; color: #1e2a4a; }
+    .mes-total-badge { background: #1e2a4a; color: white; border-radius: 20px; padding: 0.25rem 0.75rem; font-size: 0.75rem; font-weight: 600; }
 
-    .resumo { background: #f7fafc; border-radius: 12px; padding: 0.85rem; margin-bottom: 0; }
-    .resumo-row { display: flex; justify-content: space-between; font-size: 0.78rem; color: #718096; padding: 0.2rem 0; }
-    .resumo-row.total { font-weight: 700; color: #1e2a4a; font-size: 0.875rem; border-top: 1px solid #e2e8f0; margin-top: 0.4rem; padding-top: 0.5rem; }
+    .leitura-item { background: #f7fafc; border-radius: 10px; padding: 0.7rem 0.85rem; margin-bottom: 0.5rem; }
+    .leitura-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.2rem; }
+    .leitura-label { font-size: 0.75rem; color: #718096; }
+    .leitura-kwh { font-size: 0.78rem; font-weight: 600; color: #2b6cb0; background: #ebf8ff; border-radius: 20px; padding: 0.15rem 0.5rem; }
+    .leitura-detail { font-size: 0.7rem; color: #a0aec0; }
+    .leitura-custo { font-size: 0.75rem; color: #718096; text-align: right; margin-top: 0.2rem; }
 
-    .item-divider { height: 1px; background: #f0f4f8; margin: 0 1.1rem; }
+    .resumo-mes { background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 0.75rem 0.85rem; margin-top: 0.5rem; }
+    .resumo-row { display: flex; justify-content: space-between; font-size: 0.78rem; color: #718096; padding: 0.18rem 0; }
+    .resumo-row.total { font-weight: 700; color: #1e2a4a; font-size: 0.875rem; border-top: 1px solid #e2e8f0; margin-top: 0.35rem; padding-top: 0.45rem; }
+
+    .mes-divider { height: 1px; background: #f0f4f8; margin: 0 1.1rem; }
     .empty { padding: 2.5rem 1rem; text-align: center; color: #a0aec0; font-size: 0.875rem; }
     .dash-footer { text-align: center; font-size: 0.7rem; color: #a0aec0; padding: 1rem 0 2rem; }
 
-    /* FATURA CARD */
+    /* Fatura */
     .fatura-card { background: white; border-radius: 16px; margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.06); padding: 1rem 1.1rem; }
     .fatura-card-title { font-size: 0.875rem; font-weight: 600; color: #2d3748; margin-bottom: 0.75rem; }
     .fatura-select { width: 100%; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 0.75rem 1rem; font-size: 0.875rem; background: #f7fafc; color: #2d3748; outline: none; margin-bottom: 0.75rem; appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23718096' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 1rem center; }
     .fatura-btn { display: flex; align-items: center; gap: 0.5rem; background: #1e2a4a; color: white; border: none; border-radius: 12px; padding: 0.8rem 1rem; font-size: 0.85rem; font-weight: 500; cursor: pointer; text-decoration: none; width: 100%; justify-content: center; }
     .fatura-btn:hover { background: #2d3f6b; }
-    .fatura-btn:disabled { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
     .fatura-none { font-size: 0.78rem; color: #a0aec0; text-align: center; padding: 0.5rem 0; }
   </style>
 </head>
@@ -98,8 +104,8 @@
     <div class="metrics-grid">
       <div class="metric-card">
         <div class="metric-icon">📋</div>
-        <div class="metric-val" id="m-registos">—</div>
-        <div class="metric-lbl">Registos</div>
+        <div class="metric-val" id="m-meses">—</div>
+        <div class="metric-lbl">Meses</div>
       </div>
       <div class="metric-card">
         <div class="metric-icon">⚡</div>
@@ -113,15 +119,13 @@
       </div>
     </div>
 
-    <!-- Fatura EDP -->
+    <!-- Faturas -->
     <div class="fatura-card">
-      <div class="fatura-card-title">📄 Faturas EDP</div>
+      <div class="fatura-card-title">📄 Faturas</div>
       <select class="fatura-select" id="fatura-select" onchange="updateFaturaBtn()">
         <option value="">Seleciona o mês</option>
       </select>
-      <a class="fatura-btn" id="fatura-link" href="#" target="_blank" rel="noopener" style="display:none">
-        Ver fatura EDP
-      </a>
+      <a class="fatura-btn" id="fatura-link" href="#" target="_blank" rel="noopener" style="display:none">Ver fatura EDP</a>
       <div class="fatura-none" id="fatura-none" style="display:none">Fatura não disponível para este mês</div>
     </div>
 
@@ -146,7 +150,10 @@ let moradores = [], leituras = [], faturas = [], config = {}, currentUser = null
 
 function getField(obj, ...keys) {
   for (const k of keys) {
-    const found = Object.keys(obj).find(key => key.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '') === k.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''));
+    const found = Object.keys(obj).find(key =>
+      key.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'') ===
+      k.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    );
     if (found && obj[found] !== '') return obj[found];
   }
   return '';
@@ -154,7 +161,7 @@ function getField(obj, ...keys) {
 
 async function sha256(text) {
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
-  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
 }
 
 async function fetchSheet(name) {
@@ -163,12 +170,12 @@ async function fetchSheet(name) {
   const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
   const cols = json.table.cols.map(c => c.label);
   return (json.table.rows || [])
-    .map(r => { const o = {}; cols.forEach((c,i) => { o[c] = r.c[i]?.v ?? ''; }); return o; })
-    .filter(r => Object.values(r).some(v => v !== ''));
+    .map(r => { const o={}; cols.forEach((c,i)=>{ o[c]=r.c[i]?.v??''; }); return o; })
+    .filter(r => Object.values(r).some(v => v!==''));
 }
 
 async function loadData() {
-  const [m, l, c, f] = await Promise.all([
+  const [m,l,c,f] = await Promise.all([
     fetchSheet('Moradores'), fetchSheet('Leituras'),
     fetchSheet('Config'), fetchSheet('Faturas')
   ]);
@@ -203,26 +210,26 @@ async function doLogin() {
 function showDashboard() {
   document.getElementById('login').style.display = 'none';
   document.getElementById('dashboard').style.display = 'block';
-  document.getElementById('dash-nome').textContent = getField(currentUser, 'Nome');
-  document.getElementById('dash-fracao').textContent = 'Fração ' + getField(currentUser, 'Fração', 'Fracao');
+  document.getElementById('dash-nome').textContent = getField(currentUser,'Nome');
+  document.getElementById('dash-fracao').textContent = 'Fração ' + getField(currentUser,'Fração','Fracao');
   renderReadings();
   populateFaturaSelect();
 }
 
 function convertDriveLink(url) {
   const match = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
-  if (match) return `https://drive.google.com/file/d/${match[1]}/view`;
+  if (match) return `https://drive.google.com/file/d/${match[1]}/preview`;
   return url;
 }
 
 function populateFaturaSelect() {
-  const select = document.getElementById('fatura-select');
-  // Mostrar meses que têm pelo menos uma leitura
   const userId = String(currentUser['ID']);
-  const meses = leituras
-    .filter(l => String(l['ID_Morador']) === userId)
-    .map(l => String(l['Mês']).trim())
-    .filter(m => m);
+  const meses = [...new Set(
+    leituras.filter(l => String(l['ID_Morador']) === userId)
+            .map(l => String(l['Mês']).trim())
+            .filter(m => m)
+  )];
+  const select = document.getElementById('fatura-select');
   select.innerHTML = '<option value="">Seleciona o mês</option>' +
     meses.map(m => `<option value="${m}">${m}</option>`).join('');
   document.getElementById('fatura-link').style.display = 'none';
@@ -249,49 +256,80 @@ function updateFaturaBtn() {
 
 function renderReadings() {
   const userId = String(currentUser['ID']);
-  const custoFixo = parseFloat(String(config['Custo Fixo Mensal (€)'] || '0').replace(',', '.'));
   const nMoradores = moradores.length || 1;
-  const fixoPorMorador = parseFloat((custoFixo / nMoradores).toFixed(2));
-
   const minhas = leituras.filter(l => String(l['ID_Morador']) === userId);
 
   if (!minhas.length) {
     document.getElementById('readings-list').innerHTML = '<div class="empty">Sem registos ainda.</div>';
-    document.getElementById('m-registos').textContent = '0';
+    document.getElementById('m-meses').textContent = '0';
     document.getElementById('m-kwh').textContent = '0';
     document.getElementById('m-eur').textContent = '0€';
     return;
   }
 
-  let totalKwh = 0, totalEur = 0;
+  // Agrupar por mês
+  const porMes = {};
+  minhas.forEach(l => {
+    const mes = String(l['Mês']).trim();
+    if (!porMes[mes]) porMes[mes] = [];
+    porMes[mes].push(l);
+  });
 
-  const rows = minhas.map((l, idx) => {
-    const consumo = parseFloat(String(l['Consumo (kWh)'] || '0').replace(',', '.'));
-    const precoLinha = parseFloat(String(l['Preço kWh (€)'] || config['Preço kWh (€)'] || '0.18').replace(',', '.'));
-    const custoKwh = parseFloat((consumo * precoLinha).toFixed(2));
-    const total = parseFloat((custoKwh + fixoPorMorador).toFixed(2));
-    totalKwh += consumo;
-    totalEur += total;
+  let totalKwhGeral = 0, totalEurGeral = 0;
+  const meses = Object.keys(porMes);
 
-    const divider = idx > 0 ? '<div class="item-divider"></div>' : '';
-    return `${divider}<div class="reading-item">
-      <div class="reading-top">
-        <span class="reading-mes">${l['Mês'] || '—'}</span>
-        <span class="reading-kwh-badge">${consumo.toFixed(1)} kWh</span>
+  const blocks = meses.map((mes, idx) => {
+    const linhas = porMes[mes];
+
+    // Custo fixo do mês — lido da primeira linha do mês, cobrado só UMA vez
+    const custoFixoMes = parseFloat(
+      String(linhas[0]['Custo Fixo Mensal (€)'] || config['Custo Fixo Mensal (€)'] || '0').replace(',','.')
+    );
+    const fixoPorMorador = parseFloat((custoFixoMes / nMoradores).toFixed(2));
+
+    // Somar consumos de todas as leituras do mês
+    let kwhMes = 0, custoKwhMes = 0;
+    const leituraItems = linhas.map(l => {
+      const consumo = parseFloat(String(l['Consumo (kWh)'] || '0').replace(',','.'));
+      const preco = parseFloat(String(l['Preço kWh (€)'] || config['Preço kWh (€)'] || '0.18').replace(',','.'));
+      const custo = parseFloat((consumo * preco).toFixed(2));
+      kwhMes += consumo;
+      custoKwhMes += custo;
+      return `<div class="leitura-item">
+        <div class="leitura-top">
+          <span class="leitura-label">Leitura ${linhas.length > 1 ? (linhas.indexOf(l)+1) : ''}</span>
+          <span class="leitura-kwh">${consumo.toFixed(1)} kWh</span>
+        </div>
+        <div class="leitura-detail">${l['Leitura Inicial (kWh)'] || l['Leitura Inicial (kwH)'] || '—'} → ${l['Leitura Final (kWh)'] || '—'} kWh</div>
+        <div class="leitura-custo">${consumo.toFixed(1)} kWh × ${preco.toFixed(3).replace('.',',')} € = ${custo.toFixed(2).replace('.',',')} €</div>
+      </div>`;
+    }).join('');
+
+    kwhMes = parseFloat(kwhMes.toFixed(2));
+    custoKwhMes = parseFloat(custoKwhMes.toFixed(2));
+    const totalMes = parseFloat((custoKwhMes + fixoPorMorador).toFixed(2));
+    totalKwhGeral += kwhMes;
+    totalEurGeral += totalMes;
+
+    const divider = idx > 0 ? '<div class="mes-divider"></div>' : '';
+    return `${divider}<div class="mes-block">
+      <div class="mes-header">
+        <span class="mes-titulo">${mes}</span>
+        <span class="mes-total-badge">${totalMes.toFixed(2).replace('.',',')} €</span>
       </div>
-      <div class="resumo-leitura">Leitura: ${l['Leitura Inicial (kWh)'] || l['Leitura Inicial (kwH)'] || '—'} → ${l['Leitura Final (kWh)'] || '—'} kWh</div>
-      <div class="resumo">
-        <div class="resumo-row"><span>Consumo (${consumo.toFixed(1)} kWh × ${precoLinha.toFixed(3).replace('.', ',')} €)</span><span>${custoKwh.toFixed(2).replace('.', ',')} €</span></div>
-        <div class="resumo-row"><span>Custo fixo (${custoFixo.toFixed(2).replace('.', ',')} € ÷ ${nMoradores})</span><span>${fixoPorMorador.toFixed(2).replace('.', ',')} €</span></div>
-        <div class="resumo-row total"><span>Total a pagar</span><span>${total.toFixed(2).replace('.', ',')} €</span></div>
+      ${leituraItems}
+      <div class="resumo-mes">
+        <div class="resumo-row"><span>Total consumo (${kwhMes.toFixed(1)} kWh)</span><span>${custoKwhMes.toFixed(2).replace('.',',')} €</span></div>
+        <div class="resumo-row"><span>Custo fixo (${custoFixoMes.toFixed(2).replace('.',',')} € ÷ ${nMoradores})</span><span>${fixoPorMorador.toFixed(2).replace('.',',')} €</span></div>
+        <div class="resumo-row total"><span>Total a pagar</span><span>${totalMes.toFixed(2).replace('.',',')} €</span></div>
       </div>
     </div>`;
   }).join('');
 
-  document.getElementById('readings-list').innerHTML = rows;
-  document.getElementById('m-registos').textContent = minhas.length;
-  document.getElementById('m-kwh').textContent = totalKwh.toFixed(1).replace('.', ',');
-  document.getElementById('m-eur').textContent = totalEur.toFixed(2).replace('.', ',') + '€';
+  document.getElementById('readings-list').innerHTML = blocks;
+  document.getElementById('m-meses').textContent = meses.length;
+  document.getElementById('m-kwh').textContent = totalKwhGeral.toFixed(1).replace('.',',');
+  document.getElementById('m-eur').textContent = totalEurGeral.toFixed(2).replace('.',',') + '€';
 }
 
 function doLogout() {
@@ -302,7 +340,7 @@ function doLogout() {
   document.getElementById('login-error').style.display = 'none';
 }
 
-document.getElementById('pin-input').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+document.getElementById('pin-input').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
 loadData();
 </script>
 </body>
