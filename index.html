@@ -125,7 +125,7 @@
       <select class="fatura-select" id="fatura-select" onchange="updateFaturaBtn()">
         <option value="">Seleciona o mês</option>
       </select>
-      <a class="fatura-btn" id="fatura-link" href="#" target="_blank" rel="noopener" style="display:none">Ver fatura EDP</a>
+      <a class="fatura-btn" id="fatura-link" href="#" target="_blank" rel="noopener noreferrer" style="display:none">Ver fatura EDP</a>
       <div class="fatura-none" id="fatura-none" style="display:none">Fatura não disponível para este mês</div>
     </div>
 
@@ -218,7 +218,7 @@ function showDashboard() {
 
 function convertDriveLink(url) {
   const match = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
-  if (match) return `https://drive.google.com/file/d/${match[1]}/preview`;
+  if (match) return `https://drive.google.com/file/d/${match[1]}/view?usp=sharing`;
   return url;
 }
 
@@ -243,8 +243,18 @@ function updateFaturaBtn() {
   link.style.display = 'none';
   none.style.display = 'none';
   if (!mes) return;
-  const faturaDoMes = faturas.find(f => String(f['Mês']).trim() === mes);
-  const url = faturaDoMes ? String(faturaDoMes['Link PDF']).trim() : '';
+
+  // Procura a fatura — tenta todas as chaves possíveis para o mês
+  let url = '';
+  for (const f of faturas) {
+    const mesKey = Object.keys(f).find(k => k.trim().toLowerCase() === 'mês' || k.trim().toLowerCase() === 'mes');
+    const linkKey = Object.keys(f).find(k => k.toLowerCase().includes('link') || k.toLowerCase().includes('pdf'));
+    if (mesKey && linkKey && String(f[mesKey]).trim() === mes) {
+      url = String(f[linkKey]).trim();
+      break;
+    }
+  }
+
   if (url) {
     link.href = convertDriveLink(url);
     link.textContent = '📄 Ver fatura EDP — ' + mes;
