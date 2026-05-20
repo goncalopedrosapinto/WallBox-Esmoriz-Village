@@ -2,136 +2,134 @@
 <html lang="pt">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <title>Wallbox — Esmoriz Village</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f0f4f8; min-height: 100vh; }
-
-    .page { display: none; }
-    .page.active { display: block; }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #1e2a4a; min-height: 100vh; color: #1a202c; }
 
     /* LOGIN */
-    #login { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-    .container { width: 100%; max-width: 480px; padding: 1rem; }
-    .card { background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
-    .logo { text-align: center; margin-bottom: 1.5rem; }
-    .logo .icon { font-size: 2.5rem; }
-    .logo h1 { font-size: 1.25rem; font-weight: 600; color: #1a202c; margin-top: 0.5rem; }
-    .logo p { font-size: 0.85rem; color: #718096; margin-top: 0.25rem; }
-    .form-group { margin-bottom: 1rem; }
-    label { display: block; font-size: 0.8rem; font-weight: 500; color: #4a5568; margin-bottom: 0.4rem; }
-    input { width: 100%; border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 0.65rem 0.85rem; font-size: 0.95rem; outline: none; transition: border-color 0.2s; }
-    input:focus { border-color: #4299e1; }
-    .btn { width: 100%; background: #2b6cb0; color: white; border: none; border-radius: 8px; padding: 0.75rem; font-size: 0.95rem; font-weight: 500; cursor: pointer; transition: background 0.2s; }
-    .btn:hover { background: #2c5282; }
-    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
-    .error { background: #fff5f5; border: 1px solid #fed7d7; color: #c53030; border-radius: 8px; padding: 0.65rem 0.85rem; font-size: 0.85rem; margin-top: 0.75rem; display: none; }
+    #login { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 1.5rem; }
+    .login-card { background: white; border-radius: 24px; padding: 2rem 1.75rem; width: 100%; max-width: 360px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+    .login-logo { text-align: center; margin-bottom: 2rem; }
+    .login-logo .bolt { font-size: 2.5rem; display: block; margin-bottom: 0.5rem; }
+    .login-logo h1 { font-size: 1.3rem; font-weight: 700; color: #1e2a4a; }
+    .login-logo p { font-size: 0.8rem; color: #a0aec0; margin-top: 0.25rem; }
+    .form-label { font-size: 0.75rem; font-weight: 600; color: #4a5568; margin-bottom: 0.4rem; display: block; letter-spacing: 0.05em; text-transform: uppercase; }
+    .form-input { width: 100%; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 0.85rem 1rem; font-size: 1rem; outline: none; transition: border-color 0.2s; background: #f7fafc; margin-bottom: 1rem; }
+    .form-input:focus { border-color: #4a6fa5; background: white; }
+    .login-btn { width: 100%; background: #1e2a4a; color: white; border: none; border-radius: 12px; padding: 0.9rem; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+    .login-btn:hover { background: #2d3f6b; }
+    .login-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .login-error { background: #fff5f5; border: 1px solid #fed7d7; color: #c53030; border-radius: 10px; padding: 0.65rem 0.85rem; font-size: 0.82rem; margin-top: 0.75rem; display: none; text-align: center; }
+    .login-loading { text-align: center; margin-top: 1rem; font-size: 0.82rem; color: #a0aec0; display: none; }
+    .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid #e2e8f0; border-top-color: #4a6fa5; border-radius: 50%; animation: spin 0.7s linear infinite; margin-right: 0.4rem; vertical-align: middle; }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
     /* DASHBOARD */
-    .dash-container { max-width: 560px; margin: 0 auto; padding: 1rem; }
-    .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; padding-top: 1rem; }
-    .header-left h2 { font-size: 1.1rem; font-weight: 600; color: #1a202c; }
-    .header-left p { font-size: 0.8rem; color: #718096; margin-top: 0.1rem; }
-    .logout { background: none; border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 0.4rem 0.85rem; font-size: 0.8rem; color: #4a5568; cursor: pointer; }
-    .logout:hover { background: #f7fafc; }
+    #dashboard { display: none; min-height: 100vh; background: #1e2a4a; }
 
-    .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1rem; }
-    .metric { background: white; border-radius: 12px; padding: 1rem; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
-    .metric-label { font-size: 0.7rem; color: #718096; margin-bottom: 0.3rem; text-transform: uppercase; letter-spacing: 0.05em; }
-    .metric-value { font-size: 1.5rem; font-weight: 600; color: #1a202c; }
+    .dash-header { background: #1e2a4a; padding: 3rem 1.25rem 1.5rem; }
+    .dash-header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.25rem; }
+    .dash-header-top h2 { font-size: 1.3rem; font-weight: 700; color: white; }
+    .logout-btn { background: rgba(255,255,255,0.1); border: none; border-radius: 20px; padding: 0.4rem 0.85rem; font-size: 0.75rem; color: rgba(255,255,255,0.7); cursor: pointer; }
+    .logout-btn:hover { background: rgba(255,255,255,0.2); }
+    .dash-header p { font-size: 0.8rem; color: rgba(255,255,255,0.5); }
 
-    .section { background: white; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); overflow: hidden; margin-bottom: 1rem; }
-    .section-header { padding: 0.85rem 1.1rem; border-bottom: 1px solid #f0f4f8; display: flex; align-items: center; justify-content: space-between; }
-    .section-header h3 { font-size: 0.875rem; font-weight: 600; color: #2d3748; }
-    .section-header span { font-size: 0.75rem; color: #a0aec0; }
+    .dash-body { background: #f0f4f8; border-radius: 24px 24px 0 0; min-height: calc(100vh - 130px); padding: 1.25rem; }
 
-    .reading-row { display: flex; align-items: center; justify-content: space-between; padding: 0.85rem 1.1rem; border-bottom: 1px solid #f7fafc; gap: 0.5rem; }
-    .reading-row:last-child { border-bottom: none; }
-    .reading-month { font-size: 0.875rem; font-weight: 500; color: #2d3748; }
-    .reading-detail { font-size: 0.75rem; color: #a0aec0; margin-top: 0.15rem; }
-    .reading-right { text-align: right; flex-shrink: 0; }
-    .reading-kwh { font-size: 0.875rem; font-weight: 600; color: #2d3748; }
-    .reading-eur { font-size: 0.75rem; color: #48bb78; font-weight: 500; margin-top: 0.15rem; }
-    .reading-sub { font-size: 0.7rem; color: #a0aec0; margin-top: 0.1rem; }
+    /* CARDS */
+    .card { background: white; border-radius: 16px; margin-bottom: 1rem; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .card-header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.1rem 0.75rem; }
+    .card-title { font-size: 0.875rem; font-weight: 600; color: #2d3748; }
+    .card-badge { font-size: 0.7rem; color: #a0aec0; background: #f7fafc; border-radius: 20px; padding: 0.2rem 0.6rem; }
+    .card-divider { height: 1px; background: #f0f4f8; margin: 0 1.1rem; }
 
-    .fatura-btn { display: inline-flex; align-items: center; gap: 0.4rem; background: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8; border-radius: 8px; padding: 0.5rem 0.85rem; font-size: 0.8rem; font-weight: 500; cursor: pointer; text-decoration: none; margin: 0.75rem 1.1rem; }
-    .fatura-btn:hover { background: #bee3f8; }
-    .fatura-btn .icon { font-size: 1rem; }
+    /* MÉTRICAS */
+    .metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1rem; }
+    .metric-card { background: white; border-radius: 16px; padding: 1rem 0.75rem; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .metric-icon { font-size: 1.25rem; margin-bottom: 0.3rem; }
+    .metric-val { font-size: 1.3rem; font-weight: 700; color: #1e2a4a; line-height: 1; }
+    .metric-lbl { font-size: 0.65rem; color: #a0aec0; margin-top: 0.25rem; text-transform: uppercase; letter-spacing: 0.04em; }
 
-    .resumo-box { background: #f7fafc; border-radius: 10px; margin: 0.75rem 1.1rem; padding: 0.85rem; }
-    .resumo-row { display: flex; justify-content: space-between; font-size: 0.8rem; padding: 0.25rem 0; color: #4a5568; }
-    .resumo-row.total { font-weight: 600; color: #1a202c; border-top: 1px solid #e2e8f0; margin-top: 0.4rem; padding-top: 0.5rem; font-size: 0.875rem; }
+    /* LEITURA */
+    .reading-item { padding: 1rem 1.1rem; }
+    .reading-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem; }
+    .reading-mes { font-size: 0.95rem; font-weight: 600; color: #2d3748; }
+    .reading-kwh-badge { background: #ebf8ff; color: #2b6cb0; border-radius: 20px; padding: 0.2rem 0.65rem; font-size: 0.75rem; font-weight: 600; }
 
-    .empty { padding: 2rem; text-align: center; color: #a0aec0; font-size: 0.875rem; }
-    .loading { text-align: center; padding: 2rem; color: #718096; font-size: 0.875rem; }
-    .spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid #e2e8f0; border-top-color: #4299e1; border-radius: 50%; animation: spin 0.7s linear infinite; margin-right: 0.5rem; vertical-align: middle; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .footer { text-align: center; font-size: 0.75rem; color: #cbd5e0; margin-top: 1rem; padding-bottom: 2rem; }
+    .resumo { background: #f7fafc; border-radius: 12px; padding: 0.85rem; margin-bottom: 0.75rem; }
+    .resumo-row { display: flex; justify-content: space-between; font-size: 0.78rem; color: #718096; padding: 0.2rem 0; }
+    .resumo-row.total { font-weight: 700; color: #1e2a4a; font-size: 0.875rem; border-top: 1px solid #e2e8f0; margin-top: 0.4rem; padding-top: 0.5rem; }
+    .resumo-leitura { font-size: 0.72rem; color: #a0aec0; margin-bottom: 0.5rem; }
+
+    .fatura-btn { display: flex; align-items: center; gap: 0.5rem; background: #1e2a4a; color: white; border: none; border-radius: 12px; padding: 0.75rem 1rem; font-size: 0.82rem; font-weight: 500; cursor: pointer; text-decoration: none; width: 100%; justify-content: center; }
+    .fatura-btn:hover { background: #2d3f6b; }
+    .fatura-btn .pdf-icon { font-size: 1rem; }
+
+    .empty { padding: 2.5rem 1rem; text-align: center; color: #a0aec0; font-size: 0.875rem; }
+    .dash-footer { text-align: center; font-size: 0.7rem; color: #a0aec0; padding: 1rem 0 2rem; }
   </style>
 </head>
 <body>
 
 <!-- LOGIN -->
 <div id="login">
-  <div class="container">
-    <div class="card">
-      <div class="logo">
-        <div class="icon">⚡</div>
-        <h1 id="condo-name">Wallbox</h1>
-        <p>Consulta os teus consumos</p>
-      </div>
-      <div class="form-group">
-        <label>O teu PIN</label>
-        <input type="password" id="pin-input" placeholder="Introduz o teu PIN" maxlength="10" autocomplete="off">
-      </div>
-      <button class="btn" id="login-btn" onclick="doLogin()">Entrar</button>
-      <div class="error" id="login-error">PIN incorreto. Tenta novamente.</div>
-      <div id="login-loading" style="display:none; text-align:center; margin-top:1rem; font-size:0.85rem; color:#718096;">
-        <span class="spinner"></span> A verificar...
-      </div>
+  <div class="login-card">
+    <div class="login-logo">
+      <span class="bolt">⚡</span>
+      <h1 id="condo-name">Esmoriz Village</h1>
+      <p>Gestão de Wallbox</p>
     </div>
-    <div class="footer">Esmoriz Village · Gestão de Wallbox</div>
+    <label class="form-label">PIN de acesso</label>
+    <input type="password" class="form-input" id="pin-input" placeholder="••••" maxlength="10" autocomplete="off">
+    <button class="login-btn" id="login-btn" onclick="doLogin()">Entrar</button>
+    <div class="login-error" id="login-error">PIN incorreto. Tenta novamente.</div>
+    <div class="login-loading" id="login-loading"><span class="spinner"></span>A verificar...</div>
   </div>
 </div>
 
 <!-- DASHBOARD -->
-<div id="dashboard" style="display:none;">
-  <div class="dash-container">
-    <div class="header">
-      <div class="header-left">
-        <h2 id="dash-nome">—</h2>
-        <p id="dash-fracao">—</p>
-      </div>
-      <button class="logout" onclick="doLogout()">Sair</button>
+<div id="dashboard">
+  <div class="dash-header">
+    <div class="dash-header-top">
+      <h2 id="dash-nome">—</h2>
+      <button class="logout-btn" onclick="doLogout()">Sair</button>
     </div>
+    <p id="dash-fracao">—</p>
+  </div>
 
-    <!-- Métricas gerais -->
-    <div class="metrics">
-      <div class="metric">
-        <div class="metric-label">Registos</div>
-        <div class="metric-value" id="m-registos">—</div>
+  <div class="dash-body">
+    <!-- Métricas -->
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-icon">📋</div>
+        <div class="metric-val" id="m-registos">—</div>
+        <div class="metric-lbl">Registos</div>
       </div>
-      <div class="metric">
-        <div class="metric-label">Total kWh</div>
-        <div class="metric-value" id="m-kwh">—</div>
+      <div class="metric-card">
+        <div class="metric-icon">⚡</div>
+        <div class="metric-val" id="m-kwh">—</div>
+        <div class="metric-lbl">Total kWh</div>
       </div>
-      <div class="metric">
-        <div class="metric-label">Total €</div>
-        <div class="metric-value" id="m-eur">—</div>
+      <div class="metric-card">
+        <div class="metric-icon">💶</div>
+        <div class="metric-val" id="m-eur">—</div>
+        <div class="metric-lbl">Total €</div>
       </div>
     </div>
 
     <!-- Histórico -->
-    <div class="section">
-      <div class="section-header">
-        <h3>Histórico de consumos</h3>
-        <span id="preco-label"></span>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Histórico de consumos</span>
+        <span class="card-badge" id="preco-label"></span>
       </div>
-      <div id="readings-list"><div class="loading"><span class="spinner"></span> A carregar...</div></div>
+      <div class="card-divider"></div>
+      <div id="readings-list"><div class="empty"><span class="spinner"></span> A carregar...</div></div>
     </div>
 
-    <div class="footer">Dados atualizados a partir do Google Sheets</div>
+    <div class="dash-footer">Dados sincronizados com Google Sheets</div>
   </div>
 </div>
 
@@ -158,17 +156,15 @@ async function fetchSheet(name) {
 
 async function loadData() {
   const [m, l, c, f] = await Promise.all([
-    fetchSheet('Moradores'),
-    fetchSheet('Leituras'),
-    fetchSheet('Config'),
-    fetchSheet('Faturas')
+    fetchSheet('Moradores'), fetchSheet('Leituras'),
+    fetchSheet('Config'), fetchSheet('Faturas')
   ]);
   moradores = m;
   leituras = l.filter(r => r['ID_Morador'] !== '');
   faturas = f;
   config = {};
   c.forEach(row => { config[row['Parâmetro']] = row['Valor']; });
-  const nome = config['Nome Condomínio'] || config['Nome do Condomínio'] || 'Esmoriz Village';
+  const nome = config['Nome Condomínio'] || 'Esmoriz Village';
   document.getElementById('condo-name').textContent = nome;
 }
 
@@ -178,15 +174,11 @@ async function doLogin() {
   document.getElementById('login-btn').disabled = true;
   document.getElementById('login-loading').style.display = 'block';
   document.getElementById('login-error').style.display = 'none';
-
   if (!moradores.length) await loadData();
-
   const pinHash = await sha256(pin);
   const user = moradores.find(m => String(m['PIN']).toLowerCase().trim() === pinHash);
-
   document.getElementById('login-btn').disabled = false;
   document.getElementById('login-loading').style.display = 'none';
-
   if (!user) {
     document.getElementById('login-error').style.display = 'block';
     document.getElementById('pin-input').value = '';
@@ -199,13 +191,12 @@ async function doLogin() {
 function showDashboard() {
   document.getElementById('login').style.display = 'none';
   document.getElementById('dashboard').style.display = 'block';
-  document.getElementById('dash-nome').textContent = currentUser['Nome'] || currentUser['NOME'] || '';
-  document.getElementById('dash-fracao').textContent = 'Fração ' + (currentUser['Fração'] || currentUser['FRAÇÃO'] || '');
+  document.getElementById('dash-nome').textContent = currentUser['Nome'] || '';
+  document.getElementById('dash-fracao').textContent = 'Fração ' + (currentUser['Fração'] || '');
   renderReadings();
 }
 
 function convertDriveLink(url) {
-  // Converte link de partilha do Drive para link de visualização direta
   const match = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
   if (match) return `https://drive.google.com/file/d/${match[1]}/view`;
   return url;
@@ -239,38 +230,29 @@ function renderReadings() {
     totalKwh += consumo;
     totalEur += total;
 
-    // Procurar fatura do mesmo mês
     const faturaDoMes = faturas.find(f => String(f['Mês']).trim() === String(l['Mês']).trim());
     const linkFatura = faturaDoMes ? String(faturaDoMes['Link PDF']).trim() : '';
 
     const faturaHtml = linkFatura
       ? `<a class="fatura-btn" href="${convertDriveLink(linkFatura)}" target="_blank" rel="noopener">
-          <span class="icon">📄</span> Ver fatura EDP — ${l['Mês']}
+          <span class="pdf-icon">📄</span> Fatura EDP — ${l['Mês']}
         </a>`
       : '';
 
-    const resumoHtml = `
-      <div class="resumo-box">
-        <div class="resumo-row"><span>Consumo (${consumo.toFixed(1)} kWh × ${preco.toFixed(2).replace('.', ',')} €)</span><span>${custoKwh.toFixed(2).replace('.', ',')} €</span></div>
-        <div class="resumo-row"><span>Custo fixo (${custoFixo.toFixed(2).replace('.', ',')} € ÷ ${nMoradores} moradores)</span><span>${fixoPorMorador.toFixed(2).replace('.', ',')} €</span></div>
-        <div class="resumo-row total"><span>Total a pagar</span><span>${total.toFixed(2).replace('.', ',')} €</span></div>
-      </div>`;
-
-    return `<div>
-      <div class="reading-row">
-        <div>
-          <div class="reading-month">${l['Mês'] || '—'}</div>
-          <div class="reading-detail">${l['Leitura Inicial (kWh)'] || l['Leitura Inicial (kwH)'] || '—'} → ${l['Leitura Final (kWh)'] || '—'} kWh</div>
-        </div>
-        <div class="reading-right">
-          <div class="reading-kwh">${consumo.toFixed(1)} kWh</div>
-          <div class="reading-eur">${total.toFixed(2).replace('.', ',')} €</div>
-        </div>
+    return `<div class="reading-item">
+      <div class="reading-top">
+        <span class="reading-mes">${l['Mês'] || '—'}</span>
+        <span class="reading-kwh-badge">${consumo.toFixed(1)} kWh</span>
       </div>
-      ${resumoHtml}
+      <div class="resumo-leitura">Leitura: ${l['Leitura Inicial (kWh)'] || l['Leitura Inicial (kwH)'] || '—'} → ${l['Leitura Final (kWh)'] || '—'} kWh</div>
+      <div class="resumo">
+        <div class="resumo-row"><span>Consumo (${consumo.toFixed(1)} kWh × ${preco.toFixed(3).replace('.', ',')} €)</span><span>${custoKwh.toFixed(2).replace('.', ',')} €</span></div>
+        <div class="resumo-row"><span>Custo fixo (${custoFixo.toFixed(2).replace('.', ',')} € ÷ ${nMoradores})</span><span>${fixoPorMorador.toFixed(2).replace('.', ',')} €</span></div>
+        <div class="resumo-row total"><span>Total a pagar</span><span>${total.toFixed(2).replace('.', ',')} €</span></div>
+      </div>
       ${faturaHtml}
     </div>`;
-  }).join('');
+  }).join('<div style="height:1px;background:#f0f4f8;margin:0 1.1rem"></div>');
 
   document.getElementById('readings-list').innerHTML = rows;
   document.getElementById('m-registos').textContent = minhas.length;
