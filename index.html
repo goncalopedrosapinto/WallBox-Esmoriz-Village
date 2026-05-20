@@ -8,7 +8,6 @@
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #1e2a4a; min-height: 100vh; color: #1a202c; }
 
-    /* LOGIN */
     #login { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 1.5rem; }
     .login-card { background: white; border-radius: 24px; padding: 2rem 1.75rem; width: 100%; max-width: 360px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
     .login-logo { text-align: center; margin-bottom: 2rem; }
@@ -26,9 +25,7 @@
     .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid #e2e8f0; border-top-color: #4a6fa5; border-radius: 50%; animation: spin 0.7s linear infinite; margin-right: 0.4rem; vertical-align: middle; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* DASHBOARD */
     #dashboard { display: none; min-height: 100vh; background: #1e2a4a; }
-
     .dash-header { background: #1e2a4a; padding: 3rem 1.25rem 1.5rem; }
     .dash-header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.25rem; }
     .dash-header-top h2 { font-size: 1.3rem; font-weight: 700; color: white; }
@@ -38,42 +35,37 @@
 
     .dash-body { background: #f0f4f8; border-radius: 24px 24px 0 0; min-height: calc(100vh - 130px); padding: 1.25rem; }
 
-    /* CARDS */
-    .card { background: white; border-radius: 16px; margin-bottom: 1rem; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-    .card-header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.1rem 0.75rem; }
-    .card-title { font-size: 0.875rem; font-weight: 600; color: #2d3748; }
-    .card-badge { font-size: 0.7rem; color: #a0aec0; background: #f7fafc; border-radius: 20px; padding: 0.2rem 0.6rem; }
-    .card-divider { height: 1px; background: #f0f4f8; margin: 0 1.1rem; }
-
-    /* MÉTRICAS */
     .metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1rem; }
     .metric-card { background: white; border-radius: 16px; padding: 1rem 0.75rem; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
     .metric-icon { font-size: 1.25rem; margin-bottom: 0.3rem; }
     .metric-val { font-size: 1.3rem; font-weight: 700; color: #1e2a4a; line-height: 1; }
     .metric-lbl { font-size: 0.65rem; color: #a0aec0; margin-top: 0.25rem; text-transform: uppercase; letter-spacing: 0.04em; }
 
-    /* LEITURA */
+    .card { background: white; border-radius: 16px; margin-bottom: 1rem; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .card-header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.1rem 0.75rem; }
+    .card-title { font-size: 0.875rem; font-weight: 600; color: #2d3748; }
+    .card-divider { height: 1px; background: #f0f4f8; }
+
     .reading-item { padding: 1rem 1.1rem; }
-    .reading-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem; }
+    .reading-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem; }
     .reading-mes { font-size: 0.95rem; font-weight: 600; color: #2d3748; }
     .reading-kwh-badge { background: #ebf8ff; color: #2b6cb0; border-radius: 20px; padding: 0.2rem 0.65rem; font-size: 0.75rem; font-weight: 600; }
+    .resumo-leitura { font-size: 0.72rem; color: #a0aec0; margin-bottom: 0.6rem; }
 
     .resumo { background: #f7fafc; border-radius: 12px; padding: 0.85rem; margin-bottom: 0.75rem; }
     .resumo-row { display: flex; justify-content: space-between; font-size: 0.78rem; color: #718096; padding: 0.2rem 0; }
     .resumo-row.total { font-weight: 700; color: #1e2a4a; font-size: 0.875rem; border-top: 1px solid #e2e8f0; margin-top: 0.4rem; padding-top: 0.5rem; }
-    .resumo-leitura { font-size: 0.72rem; color: #a0aec0; margin-bottom: 0.5rem; }
 
     .fatura-btn { display: flex; align-items: center; gap: 0.5rem; background: #1e2a4a; color: white; border: none; border-radius: 12px; padding: 0.75rem 1rem; font-size: 0.82rem; font-weight: 500; cursor: pointer; text-decoration: none; width: 100%; justify-content: center; }
     .fatura-btn:hover { background: #2d3f6b; }
-    .fatura-btn .pdf-icon { font-size: 1rem; }
 
+    .item-divider { height: 1px; background: #f0f4f8; margin: 0 1.1rem; }
     .empty { padding: 2.5rem 1rem; text-align: center; color: #a0aec0; font-size: 0.875rem; }
     .dash-footer { text-align: center; font-size: 0.7rem; color: #a0aec0; padding: 1rem 0 2rem; }
   </style>
 </head>
 <body>
 
-<!-- LOGIN -->
 <div id="login">
   <div class="login-card">
     <div class="login-logo">
@@ -89,7 +81,6 @@
   </div>
 </div>
 
-<!-- DASHBOARD -->
 <div id="dashboard">
   <div class="dash-header">
     <div class="dash-header-top">
@@ -100,7 +91,6 @@
   </div>
 
   <div class="dash-body">
-    <!-- Métricas -->
     <div class="metrics-grid">
       <div class="metric-card">
         <div class="metric-icon">📋</div>
@@ -119,11 +109,9 @@
       </div>
     </div>
 
-    <!-- Histórico -->
     <div class="card">
       <div class="card-header">
         <span class="card-title">Histórico de consumos</span>
-        <span class="card-badge" id="preco-label"></span>
       </div>
       <div class="card-divider"></div>
       <div id="readings-list"><div class="empty"><span class="spinner"></span> A carregar...</div></div>
@@ -164,8 +152,7 @@ async function loadData() {
   faturas = f;
   config = {};
   c.forEach(row => { config[row['Parâmetro']] = row['Valor']; });
-  const nome = config['Nome Condomínio'] || 'Esmoriz Village';
-  document.getElementById('condo-name').textContent = nome;
+  document.getElementById('condo-name').textContent = config['Nome Condomínio'] || 'Esmoriz Village';
 }
 
 async function doLogin() {
@@ -204,12 +191,9 @@ function convertDriveLink(url) {
 
 function renderReadings() {
   const userId = String(currentUser['ID']);
-  const preco = parseFloat(String(config['Preço kWh (€)'] || '0.18').replace(',', '.'));
   const custoFixo = parseFloat(String(config['Custo Fixo Mensal (€)'] || '0').replace(',', '.'));
   const nMoradores = moradores.length || 1;
   const fixoPorMorador = parseFloat((custoFixo / nMoradores).toFixed(2));
-
-  document.getElementById('preco-label').textContent = preco.toFixed(2).replace('.', ',') + ' €/kWh';
 
   const minhas = leituras.filter(l => String(l['ID_Morador']) === userId);
 
@@ -223,9 +207,13 @@ function renderReadings() {
 
   let totalKwh = 0, totalEur = 0;
 
-  const rows = minhas.map(l => {
+  const rows = minhas.map((l, idx) => {
     const consumo = parseFloat(String(l['Consumo (kWh)'] || '0').replace(',', '.'));
-    const custoKwh = parseFloat((consumo * preco).toFixed(2));
+
+    // Preço lido diretamente da linha — histórico preservado
+    const precoLinha = parseFloat(String(l['Preço kWh (€)'] || config['Preço kWh (€)'] || '0.18').replace(',', '.'));
+
+    const custoKwh = parseFloat((consumo * precoLinha).toFixed(2));
     const total = parseFloat((custoKwh + fixoPorMorador).toFixed(2));
     totalKwh += consumo;
     totalEur += total;
@@ -235,24 +223,35 @@ function renderReadings() {
 
     const faturaHtml = linkFatura
       ? `<a class="fatura-btn" href="${convertDriveLink(linkFatura)}" target="_blank" rel="noopener">
-          <span class="pdf-icon">📄</span> Fatura EDP — ${l['Mês']}
+          📄 Ver fatura EDP — ${l['Mês']}
         </a>`
       : '';
 
-    return `<div class="reading-item">
+    const divider = idx > 0 ? '<div class="item-divider"></div>' : '';
+
+    return `${divider}<div class="reading-item">
       <div class="reading-top">
         <span class="reading-mes">${l['Mês'] || '—'}</span>
         <span class="reading-kwh-badge">${consumo.toFixed(1)} kWh</span>
       </div>
       <div class="resumo-leitura">Leitura: ${l['Leitura Inicial (kWh)'] || l['Leitura Inicial (kwH)'] || '—'} → ${l['Leitura Final (kWh)'] || '—'} kWh</div>
       <div class="resumo">
-        <div class="resumo-row"><span>Consumo (${consumo.toFixed(1)} kWh × ${preco.toFixed(3).replace('.', ',')} €)</span><span>${custoKwh.toFixed(2).replace('.', ',')} €</span></div>
-        <div class="resumo-row"><span>Custo fixo (${custoFixo.toFixed(2).replace('.', ',')} € ÷ ${nMoradores})</span><span>${fixoPorMorador.toFixed(2).replace('.', ',')} €</span></div>
-        <div class="resumo-row total"><span>Total a pagar</span><span>${total.toFixed(2).replace('.', ',')} €</span></div>
+        <div class="resumo-row">
+          <span>Consumo (${consumo.toFixed(1)} kWh × ${precoLinha.toFixed(3).replace('.', ',')} €)</span>
+          <span>${custoKwh.toFixed(2).replace('.', ',')} €</span>
+        </div>
+        <div class="resumo-row">
+          <span>Custo fixo (${custoFixo.toFixed(2).replace('.', ',')} € ÷ ${nMoradores})</span>
+          <span>${fixoPorMorador.toFixed(2).replace('.', ',')} €</span>
+        </div>
+        <div class="resumo-row total">
+          <span>Total a pagar</span>
+          <span>${total.toFixed(2).replace('.', ',')} €</span>
+        </div>
       </div>
       ${faturaHtml}
     </div>`;
-  }).join('<div style="height:1px;background:#f0f4f8;margin:0 1.1rem"></div>');
+  }).join('');
 
   document.getElementById('readings-list').innerHTML = rows;
   document.getElementById('m-registos').textContent = minhas.length;
