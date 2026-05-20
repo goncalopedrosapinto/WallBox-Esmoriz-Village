@@ -17,8 +17,7 @@
     .form-label { font-size: 0.75rem; font-weight: 600; color: #4a5568; margin-bottom: 0.4rem; display: block; letter-spacing: 0.05em; text-transform: uppercase; }
     .form-input { width: 100%; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 0.85rem 1rem; font-size: 1rem; outline: none; transition: border-color 0.2s; background: #f7fafc; margin-bottom: 1rem; }
     .form-input:focus { border-color: #4a6fa5; background: white; }
-    .login-btn { width: 100%; background: #1e2a4a; color: white; border: none; border-radius: 12px; padding: 0.9rem; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: background 0.2s; }
-    .login-btn:hover { background: #2d3f6b; }
+    .login-btn { width: 100%; background: #1e2a4a; color: white; border: none; border-radius: 12px; padding: 0.9rem; font-size: 0.95rem; font-weight: 600; cursor: pointer; }
     .login-btn:disabled { opacity: 0.5; cursor: not-allowed; }
     .login-error { background: #fff5f5; border: 1px solid #fed7d7; color: #c53030; border-radius: 10px; padding: 0.65rem 0.85rem; font-size: 0.82rem; margin-top: 0.75rem; display: none; text-align: center; }
     .login-loading { text-align: center; margin-top: 1rem; font-size: 0.82rem; color: #a0aec0; display: none; }
@@ -30,7 +29,6 @@
     .dash-header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.25rem; }
     .dash-header-top h2 { font-size: 1.3rem; font-weight: 700; color: white; }
     .logout-btn { background: rgba(255,255,255,0.1); border: none; border-radius: 20px; padding: 0.4rem 0.85rem; font-size: 0.75rem; color: rgba(255,255,255,0.7); cursor: pointer; }
-    .logout-btn:hover { background: rgba(255,255,255,0.2); }
     .dash-header p { font-size: 0.8rem; color: rgba(255,255,255,0.5); }
 
     .dash-body { background: #f0f4f8; border-radius: 24px 24px 0 0; min-height: calc(100vh - 130px); padding: 1.25rem; }
@@ -52,16 +50,22 @@
     .reading-kwh-badge { background: #ebf8ff; color: #2b6cb0; border-radius: 20px; padding: 0.2rem 0.65rem; font-size: 0.75rem; font-weight: 600; }
     .resumo-leitura { font-size: 0.72rem; color: #a0aec0; margin-bottom: 0.6rem; }
 
-    .resumo { background: #f7fafc; border-radius: 12px; padding: 0.85rem; margin-bottom: 0.75rem; }
+    .resumo { background: #f7fafc; border-radius: 12px; padding: 0.85rem; margin-bottom: 0; }
     .resumo-row { display: flex; justify-content: space-between; font-size: 0.78rem; color: #718096; padding: 0.2rem 0; }
     .resumo-row.total { font-weight: 700; color: #1e2a4a; font-size: 0.875rem; border-top: 1px solid #e2e8f0; margin-top: 0.4rem; padding-top: 0.5rem; }
-
-    .fatura-btn { display: flex; align-items: center; gap: 0.5rem; background: #1e2a4a; color: white; border: none; border-radius: 12px; padding: 0.75rem 1rem; font-size: 0.82rem; font-weight: 500; cursor: pointer; text-decoration: none; width: 100%; justify-content: center; }
-    .fatura-btn:hover { background: #2d3f6b; }
 
     .item-divider { height: 1px; background: #f0f4f8; margin: 0 1.1rem; }
     .empty { padding: 2.5rem 1rem; text-align: center; color: #a0aec0; font-size: 0.875rem; }
     .dash-footer { text-align: center; font-size: 0.7rem; color: #a0aec0; padding: 1rem 0 2rem; }
+
+    /* FATURA CARD */
+    .fatura-card { background: white; border-radius: 16px; margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.06); padding: 1rem 1.1rem; }
+    .fatura-card-title { font-size: 0.875rem; font-weight: 600; color: #2d3748; margin-bottom: 0.75rem; }
+    .fatura-select { width: 100%; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 0.75rem 1rem; font-size: 0.875rem; background: #f7fafc; color: #2d3748; outline: none; margin-bottom: 0.75rem; appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23718096' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 1rem center; }
+    .fatura-btn { display: flex; align-items: center; gap: 0.5rem; background: #1e2a4a; color: white; border: none; border-radius: 12px; padding: 0.8rem 1rem; font-size: 0.85rem; font-weight: 500; cursor: pointer; text-decoration: none; width: 100%; justify-content: center; }
+    .fatura-btn:hover { background: #2d3f6b; }
+    .fatura-btn:disabled { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
+    .fatura-none { font-size: 0.78rem; color: #a0aec0; text-align: center; padding: 0.5rem 0; }
   </style>
 </head>
 <body>
@@ -109,6 +113,19 @@
       </div>
     </div>
 
+    <!-- Fatura EDP -->
+    <div class="fatura-card">
+      <div class="fatura-card-title">📄 Faturas EDP</div>
+      <select class="fatura-select" id="fatura-select" onchange="updateFaturaBtn()">
+        <option value="">Seleciona o mês</option>
+      </select>
+      <a class="fatura-btn" id="fatura-link" href="#" target="_blank" rel="noopener" style="display:none">
+        Ver fatura EDP
+      </a>
+      <div class="fatura-none" id="fatura-none" style="display:none">Fatura não disponível para este mês</div>
+    </div>
+
+    <!-- Histórico -->
     <div class="card">
       <div class="card-header">
         <span class="card-title">Histórico de consumos</span>
@@ -126,6 +143,14 @@ const SHEET_ID = '1eEsGTGWiKsxw5-FZokxTNtJ14KDiyZKGAbfw0OWyjSM';
 const API = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=`;
 
 let moradores = [], leituras = [], faturas = [], config = {}, currentUser = null;
+
+function getField(obj, ...keys) {
+  for (const k of keys) {
+    const found = Object.keys(obj).find(key => key.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '') === k.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''));
+    if (found && obj[found] !== '') return obj[found];
+  }
+  return '';
+}
 
 async function sha256(text) {
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
@@ -178,15 +203,48 @@ async function doLogin() {
 function showDashboard() {
   document.getElementById('login').style.display = 'none';
   document.getElementById('dashboard').style.display = 'block';
-  document.getElementById('dash-nome').textContent = currentUser['Nome'] || '';
-  document.getElementById('dash-fracao').textContent = 'Fração ' + (currentUser['Fração'] || '');
+  document.getElementById('dash-nome').textContent = getField(currentUser, 'Nome');
+  document.getElementById('dash-fracao').textContent = 'Fração ' + getField(currentUser, 'Fração', 'Fracao');
   renderReadings();
+  populateFaturaSelect();
 }
 
 function convertDriveLink(url) {
   const match = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
   if (match) return `https://drive.google.com/file/d/${match[1]}/view`;
   return url;
+}
+
+function populateFaturaSelect() {
+  const select = document.getElementById('fatura-select');
+  // Mostrar meses que têm pelo menos uma leitura
+  const userId = String(currentUser['ID']);
+  const meses = leituras
+    .filter(l => String(l['ID_Morador']) === userId)
+    .map(l => String(l['Mês']).trim())
+    .filter(m => m);
+  select.innerHTML = '<option value="">Seleciona o mês</option>' +
+    meses.map(m => `<option value="${m}">${m}</option>`).join('');
+  document.getElementById('fatura-link').style.display = 'none';
+  document.getElementById('fatura-none').style.display = 'none';
+}
+
+function updateFaturaBtn() {
+  const mes = document.getElementById('fatura-select').value;
+  const link = document.getElementById('fatura-link');
+  const none = document.getElementById('fatura-none');
+  link.style.display = 'none';
+  none.style.display = 'none';
+  if (!mes) return;
+  const faturaDoMes = faturas.find(f => String(f['Mês']).trim() === mes);
+  const url = faturaDoMes ? String(faturaDoMes['Link PDF']).trim() : '';
+  if (url) {
+    link.href = convertDriveLink(url);
+    link.textContent = '📄 Ver fatura EDP — ' + mes;
+    link.style.display = 'flex';
+  } else {
+    none.style.display = 'block';
+  }
 }
 
 function renderReadings() {
@@ -209,26 +267,13 @@ function renderReadings() {
 
   const rows = minhas.map((l, idx) => {
     const consumo = parseFloat(String(l['Consumo (kWh)'] || '0').replace(',', '.'));
-
-    // Preço lido diretamente da linha — histórico preservado
     const precoLinha = parseFloat(String(l['Preço kWh (€)'] || config['Preço kWh (€)'] || '0.18').replace(',', '.'));
-
     const custoKwh = parseFloat((consumo * precoLinha).toFixed(2));
     const total = parseFloat((custoKwh + fixoPorMorador).toFixed(2));
     totalKwh += consumo;
     totalEur += total;
 
-    const faturaDoMes = faturas.find(f => String(f['Mês']).trim() === String(l['Mês']).trim());
-    const linkFatura = faturaDoMes ? String(faturaDoMes['Link PDF']).trim() : '';
-
-    const faturaHtml = linkFatura
-      ? `<a class="fatura-btn" href="${convertDriveLink(linkFatura)}" target="_blank" rel="noopener">
-          📄 Ver fatura EDP — ${l['Mês']}
-        </a>`
-      : '';
-
     const divider = idx > 0 ? '<div class="item-divider"></div>' : '';
-
     return `${divider}<div class="reading-item">
       <div class="reading-top">
         <span class="reading-mes">${l['Mês'] || '—'}</span>
@@ -236,20 +281,10 @@ function renderReadings() {
       </div>
       <div class="resumo-leitura">Leitura: ${l['Leitura Inicial (kWh)'] || l['Leitura Inicial (kwH)'] || '—'} → ${l['Leitura Final (kWh)'] || '—'} kWh</div>
       <div class="resumo">
-        <div class="resumo-row">
-          <span>Consumo (${consumo.toFixed(1)} kWh × ${precoLinha.toFixed(3).replace('.', ',')} €)</span>
-          <span>${custoKwh.toFixed(2).replace('.', ',')} €</span>
-        </div>
-        <div class="resumo-row">
-          <span>Custo fixo (${custoFixo.toFixed(2).replace('.', ',')} € ÷ ${nMoradores})</span>
-          <span>${fixoPorMorador.toFixed(2).replace('.', ',')} €</span>
-        </div>
-        <div class="resumo-row total">
-          <span>Total a pagar</span>
-          <span>${total.toFixed(2).replace('.', ',')} €</span>
-        </div>
+        <div class="resumo-row"><span>Consumo (${consumo.toFixed(1)} kWh × ${precoLinha.toFixed(3).replace('.', ',')} €)</span><span>${custoKwh.toFixed(2).replace('.', ',')} €</span></div>
+        <div class="resumo-row"><span>Custo fixo (${custoFixo.toFixed(2).replace('.', ',')} € ÷ ${nMoradores})</span><span>${fixoPorMorador.toFixed(2).replace('.', ',')} €</span></div>
+        <div class="resumo-row total"><span>Total a pagar</span><span>${total.toFixed(2).replace('.', ',')} €</span></div>
       </div>
-      ${faturaHtml}
     </div>`;
   }).join('');
 
