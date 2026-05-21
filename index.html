@@ -223,12 +223,12 @@ function convertDriveLink(url) {
 }
 
 function populateFaturaSelect() {
-  const userId = String(currentUser['ID']);
-  const meses = [...new Set(
-    leituras.filter(l => String(l['ID_Morador']) === userId)
-            .map(l => String(l['Mês']).trim())
-            .filter(m => m)
-  )];
+  // Vai buscar os meses diretamente ao separador Faturas — independente das Leituras
+  const meses = faturas.map(f => {
+    const mesKey = Object.keys(f).find(k => k.trim().toLowerCase() === 'mês' || k.trim().toLowerCase() === 'mes');
+    return mesKey ? String(f[mesKey]).trim() : '';
+  }).filter(m => m);
+
   const select = document.getElementById('fatura-select');
   select.innerHTML = '<option value="">Seleciona o mês</option>' +
     meses.map(m => `<option value="${m}">${m}</option>`).join('');
