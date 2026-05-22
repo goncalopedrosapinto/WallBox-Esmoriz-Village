@@ -285,19 +285,23 @@ function renderReadings() {
     return;
   }
 
-  // Agrupar por mês
+  // Agrupar por mês (normalizado: remove espaços e usa formato consistente)
+  function normalizarMes(m) {
+    return String(m).trim().replace(/\s+/g, '').replace(/\./g, '/');
+  }
   const porMes = {};
   minhas.forEach(l => {
-    const mes = String(l['Mês']).trim();
-    if (!porMes[mes]) porMes[mes] = [];
-    porMes[mes].push(l);
+    const mes = normalizarMes(l['Mês']);
+    if (!porMes[mes]) porMes[mes] = { display: String(l['Mês']).trim(), linhas: [] };
+    porMes[mes].linhas.push(l);
   });
 
   let totalKwhGeral = 0, totalEurGeral = 0;
   const meses = Object.keys(porMes);
 
   const blocks = meses.map((mes, idx) => {
-    const linhas = porMes[mes];
+    const linhas = porMes[mes].linhas;
+    const mesDisplay = porMes[mes].display;
 
     // Custo fixo do mês — lido da primeira linha do mês, cobrado só UMA vez
     const custoFixoMes = parseFloat(
@@ -332,7 +336,7 @@ function renderReadings() {
     const divider = idx > 0 ? '<div class="mes-divider"></div>' : '';
     return `${divider}<div class="mes-block">
       <div class="mes-header">
-        <span class="mes-titulo">${mes}</span>
+        <span class="mes-titulo">${mesDisplay}</span>
         <span class="mes-total-badge">${totalMes.toFixed(2).replace('.',',')} €</span>
       </div>
       ${leituraItems}
